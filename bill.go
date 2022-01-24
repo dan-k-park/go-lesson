@@ -21,7 +21,7 @@ func newBill(name string) bill {
 // receiver function
 // bill type is received denoted by variable b
 // limits this function to bill objects
-func (b bill)format() string {
+func (b *bill)format() string {
 	fs := "Bill breakdown: \n"
 	var total float64 = 0
 
@@ -32,7 +32,20 @@ func (b bill)format() string {
 		total += v
 	}
 
-	fs += fmt.Sprintf("%-25v ...$%0.2f", "total:", total)
+
+	fs += fmt.Sprintf("%-25v ...$%v\n", "tip:", b.tip)
+
+	fs += fmt.Sprintf("%-25v ...$%0.2f", "total:", total+b.tip)
 
 	return fs
+}
+
+func (b *bill) updateTip(tip float64) {
+	// if we receive a pointer, go automatically dereferences it
+	b.tip = tip
+} 
+
+// add an item to the bill
+func (b *bill) addItem(name string, price float64) {
+	b.items[name] = price
 }
